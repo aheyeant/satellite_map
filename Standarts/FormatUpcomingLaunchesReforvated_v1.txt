@@ -1,0 +1,23 @@
+﻿// Standart for script which defines the received upcomming launches (format: json)
+
+var launchNews = {
+    "results": [
+        {
+            "id": "9612be5b-2f6d-424b-b622-6c1baea94029",
+            "launchDate": "2020-12-27T15:40:00Z",
+            "rocketName": "Long March 4C | Unknown",
+            "providerName": "China Aerospace Corporation",
+            "padName": "Launch Area 4 (SLS-2 / 603)",
+            "image": "https://spacelaunchnow-prod-east.nyc3.digitaloceanspaces.com/media/launcher_images/long2520march25204_image_20190520170012.jpeg"
+        },
+        {
+            "id": "7409ce63-4f65-44d6-804c-5784189bf7b5",
+            "launchDate": "2020-12-28T16:42:07Z",
+            "rocketName": "Soyuz STA/Fregat | CSO 2",
+            "providerName": "Arianespace",
+            "padName": "Soyuz Launch Complex",
+            "image": "https://spacelaunchnow-prod-east.nyc3.digitaloceanspaces.com/media/launcher_images/soyuz2520sta_image_20191210133244.jpg"
+        },
+        ...
+    ]
+}

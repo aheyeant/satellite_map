@@ -1,0 +1,39 @@
+// Standart for script which defines the received TLE (format: json)
+
+// TLE format
+//  ISS (ZARYA)                                                             - header             
+//  1 25544U 98067A   08264.51782528 -.00002182  00000-0 -11606-4 0  2927   - row 1 (required)
+//  2 25544  51.6416 247.4627 0006703 130.5360 325.0288 15.72125391563537   - row 2 (required)
+
+// name - header from TLE
+// title - modified header data from TLE
+// tle - array of row 1 and 2 from TLE
+// popular - frequently requested satellite (not based on statistics)
+// active - is satellite active  
+var TLE = {
+    "satellites": [
+        {
+            "name": "STARLINK-1870",
+            "title": "Starlink-1870",
+            "group": "gps",
+            "tle": [
+                "1 47156C 20088AL  20354.46365095  .00000036  00000-0  39015-6 0  3541",
+                "2 47156  53.0544 232.8291 0001152  93.3845 205.1298 15.62750454    11"
+            ],
+            "popular": false,
+            "active": true
+        },
+        {
+            "name": "STARLINK-1871",
+            "title": "Starlink-1871",
+            "group": "gps",
+            "tle": [
+                "1 46743C 20074E   20354.17170914  .00041901  00000-0  45692-3 0  3540",
+                "2 46743  53.0524 248.2480 0001443  57.1135  61.5617 15.62697359    17"
+            ],
+            "popular": true,
+            "active": true
+        },
+        ...
+    ]
+};

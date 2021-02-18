@@ -1,0 +1,222 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="MasterPage.master.cs" Inherits="SatelliteMap.Pages.MasterPage" %>
+
+<!DOCTYPE html>
+
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head profile="http://www.w3.org/2005/10/profile" runat="server">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content="Online satellite map"/>
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700&display=swap" rel="stylesheet"/>
+    <link rel="icon" type="image/png" href="/favicon.png"/>
+    <link rel="stylesheet" href="/Content/Styles.css"/>
+    <title></title>
+    <script src="/Scripts/constants.js"></script>
+    <script src="/Scripts/External/jquery.min.js"></script>
+    <script>
+        var jQ = jQuery.noConflict(true);
+    </script>
+    <script>
+        jQ(document).ready(function () {
+            jQ('.interactable').hover(function () {
+                jQ(this).addClass('hover');
+            }, function () {
+                jQ(this).removeClass('hover');
+            });
+
+            jQ('[ripple]').on('click', function (e) {
+                var rippleDiv = jQ('<div class="ripple" />'),
+                    rippleOffset = jQ(this).offset(),
+                    rippleY = e.pageY - rippleOffset.top,
+                    rippleX = e.pageX - rippleOffset.left,
+                    ripple = jQ('.ripple');
+
+                rippleDiv.css({
+                    top: '100%',
+                    left: '50%',
+                    background: jQ(this).attr("ripple-color")
+                }).appendTo(jQ(this));
+
+                window.setTimeout(function () {
+                    rippleDiv.remove();
+                }, 400);
+            });
+        });
+
+        var observerPositionPopupSelectedTab = null;
+        var isMobile = false;
+        if (window.innerWidth < 500) isMobile = true;
+
+        function setObserverPositionPopupShow() {
+            observerPositionPopupSelectedTab = null;
+            document.getElementById("observerPosition").style.display = "none";
+            document.getElementById("setObserverPositionPopup").style.display = "block";
+        };
+
+        function setObserverPositionPopupHide() {
+            document.getElementById("observerPosition").style.display = "block";
+            document.getElementById("setObserverPositionPopup").style.display = "none";
+        };
+
+        function showSearchBoxByNameInPopup() {
+            document.getElementById("searchBoxByName").style.display = "block";
+            document.getElementById("searchBoxByCoord").style.display = "none";
+            if (!document.getElementById("byNameTabLabel").classList.contains("selectedTab")) {
+                document.getElementById("byNameTabLabel").classList.add("selectedTab");
+            }
+            document.getElementById("byCoordsTabLabel").classList.remove("selectedTab");
+        }
+
+        function showSearchBoxByCoordInPopup() {
+            document.getElementById("searchBoxByName").style.display = "none";
+            document.getElementById("searchBoxByCoord").style.display = "block";
+            if (!document.getElementById("byCoordsTabLabel").classList.contains("selectedTab")) {
+                document.getElementById("byCoordsTabLabel").classList.add("selectedTab");
+            }
+            document.getElementById("byNameTabLabel").classList.remove("selectedTab");
+        }
+
+        function detectChangeTab(positionType) {
+            observerPositionPopupSelectedTab = positionType;
+        };
+
+        function saveObserverLocation() {
+            if (observerPositionPopupSelectedTab === null) {
+                return;
+            }
+            if (observerPositionPopupSelectedTab === "position") {
+                observer.readPositionFromCoordinateSetterPopup();
+                observer.writeToObserverPositionLabel();
+                changeObserverPosition();
+                weatherController.initWeather(observer.getLatitude(), observer.getLongitude(), isMobile);
+            } 
+            if (observerPositionPopupSelectedTab === "coordinate") {
+                observer.setPositionDirty();
+                observer.readCoordinateFromCoordinateSetterPopup();
+                observer.writeToObserverPositionLabel();
+                changeObserverPosition();
+                weatherController.initWeather(observer.getLatitude(), observer.getLongitude(), isMobile);
+            }
+        };
+
+        function autoGeolocation() {
+            observer.autoGeolocation(weatherController);
+            changeObserverPosition();
+            weatherController.initWeather(observer.getLatitude(), observer.getLongitude(), isMobile);
+        };
+    </script>
+    <asp:ContentPlaceHolder ID="headContent" runat="server"/>
+</head>
+<body>
+    <div id="setObserverPositionPopup" class="popup" style="display: none">
+        <div class='container'>
+            <form method="get" name="CoordinateSetterPopup">
+                <div id='searchBox'>
+                    <div class='searchBoxHeader bold'>Select your location</div>
+                    <div class='tabs'>
+                        <div id='byNameTabLabel' class='interactable tab selectedTab' onclick="javascript:showSearchBoxByNameInPopup();" ripple="ripple" ripple-color="#3880ff">By Name</div>
+                        <div id='byCoordsTabLabel' class='interactable tab' onclick="javascript:showSearchBoxByCoordInPopup();" ripple="ripple" ripple-color="#3880ff">By Coordinates</div>
+                    </div>
+
+                    <div id='searchBoxByName' class="searchBoxPanel defaultTabPane" style="display: block">
+                        <select id="cityDropdown" name="Position" class="inputElement placesElement" onchange="javascript:detectChangeTab('position');">
+                        </select>
+                    </div>
+
+                    <div id='searchBoxByCoord' class="searchBoxPanel" style="display: none">
+                        <div class="coordsRow">
+                            <label for="LatitudeDegrees">Latitude</label>
+                            <input name="LatitudeDegrees" class="inputElement coordElement coordsCol" type="number" value="0" onchange="javascript:detectChangeTab('coordinate');" />
+                            <select name="LatitudeDirection" class="inputElement coordElement coordsCol" onchange="javascript:detectChangeTab('coordinate');">
+                                <option selected="selected" value="North">North</option>
+                                <option value="South">South</option>
+                            </select>
+                        </div>
+                        <div class="coordsRow">
+                            <label for="LongitudeDegrees">Longitude</label>
+                            <input name="LongitudeDegrees" class="inputElement coordElement coordsCol" type="number" value="0" onchange="javascript:detectChangeTab('coordinate');" />
+                            <select name="LongitudeDirection" class="inputElement coordElement coordsCol" onchange="javascript:detectChangeTab('coordinate');">
+                                <option selected="selected" value="East">East</option>
+                                <option value="West">West</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="buttonPopupLayout">
+                        <div class="btnBackObserverPositionPopupLayout">
+                            <button class='btn bg-red' type='button' onclick="javascript:setObserverPositionPopupHide();observer.wrtiteToCoordinateSetterPopup();">Back</button>
+                        </div>
+                        <div class="btnSelectObserverPositionPopupLayout">
+                            <button class='btn bg-primary' type='button' onclick="javascript:setObserverPositionPopupHide();javascript:saveObserverLocation();">Select</button>
+                        </div>
+                    </div>
+                    <div><small><span id='announcementCoordSetterPopupMessage' class="announcementPopupMessage"></span></small></div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div id="mainApp">
+        <div id="nav">
+            <div class="tabs">
+                <a href="/" id="homeTabLabel" class='interactable tab' ripple="ripple" ripple-color="#3880ff">
+                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M261.56 101.28a8 8 0 00-11.06 0L66.4 277.15a8 8 0 00-2.47 5.79L63.9 448a32 32 0 0032 32H192a16 16 0 0016-16V328a8 8 0 018-8h80a8 8 0 018 8v136a16 16 0 0016 16h96.06a32 32 0 0032-32V282.94a8 8 0 00-2.47-5.79z"></path><path d="M490.91 244.15l-74.8-71.56V64a16 16 0 00-16-16h-48a16 16 0 00-16 16v32l-57.92-55.38C272.77 35.14 264.71 32 256 32c-8.68 0-16.72 3.14-22.14 8.63l-212.7 203.5c-6.22 6-7 15.87-1.34 22.37A16 16 0 0043 267.56L250.5 69.28a8 8 0 0111.06 0l207.52 198.28a16 16 0 0022.59-.44c6.14-6.36 5.63-16.86-.76-22.97z"></path></svg>
+                    <div class="tabLabel">Home</div>
+                </a>
+                <a href="/live" id="liveMapTabLabel" class='interactable tab' ripple="ripple" ripple-color="#3880ff">
+                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><circle cx="256" cy="256" r="24"></circle><path d="M256 48C141.31 48 48 141.31 48 256s93.31 208 208 208 208-93.31 208-208S370.69 48 256 48zm105.07 113.33l-46.88 117.2a64 64 0 01-35.66 35.66l-117.2 46.88a8 8 0 01-10.4-10.4l46.88-117.2a64 64 0 0135.66-35.66l117.2-46.88a8 8 0 0110.4 10.4z"></path></svg>
+                    <div class="tabLabel">Online Map</div>
+                </a>
+                <a href="/tracking" id="trackingMapLabel" class='interactable tab' ripple="ripple" ripple-color="#3880ff">
+                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 430 430"><path d="M215,0C96.451,0,0,96.451,0,215s96.451,215,215,215s215-96.451,215-215S333.549,0,215,0z M384.91,285.943  c-21.135,50.439-64.104,89.547-117.032,105.441c0.949-1.762,1.868-3.543,2.757-5.344c4.547-9.202,9.325-15.69,17.344-22.161 c6.137-4.956,18.186-12.632,16.216-22.311c-1.421-6.995-9.407-9.865-15.442-11.575c-9.575-2.713-19.818-3.416-29.699-4.1 c-8.557-0.598-17.443-0.293-25.797-2.424c-12.502-3.182-15.32-14.004-16.111-25.412c-0.705-10.141-0.554-20.567-5.541-29.744 c-6.422-11.811-21.202-15.17-33.458-16.297c-10.346-0.947-20.679-0.448-30.969-2.172c-9.9-1.658-19.276-5.135-29.442-4.741 c-13.175,0.508-19.092,9.438-24.712,19.765c-2.774,5.1-20.296,44.321-30.591,53.115c-17.752-26.207-28.919-57.215-31.143-90.632 c1.455-0.392,2.897-0.935,4.361-1.664c5.728-2.844,9.741-7.978,15.974-10.011c5.943-1.936,13.621-0.219,19.693,0.376 c6.042,0.591,12.178,1.217,18.225,0.394c12.071-1.649,18.467-9.987,20.395-21.627c1.146-6.953,0.252-13.945,0.459-20.946  c0.327-10.909,7.486-14.823,17.351-15.751c18.634-1.75,62.101,3.188,62.981-25.49c0.375-12.267-14.225-18.598-23.734-21.872 c-18.516-6.37-38.747-4.146-57.685-8.571c-10.073-2.354-18.569-8.637-25.693-16.063C117.061,52.047,163.598,30.864,215,30.864 c10.994,0,21.755,0.97,32.219,2.828c-5.35,0.994-10.631,2.406-15.769,4.481c-27.107,10.929-27.923,41.682-16.075,64.785  c7.348,14.328,19.248,26.332,31.678,36.314c12.033,9.659,25.181,15.367,38.523,22.694c17.701,9.733,15.564,35.151,20.042,52.277 c3.777,14.443,12.847,26.627,27.143,31.627c8.643,3.02,18.795,0.663,26.363,6.685c6.5,5.157,8.027,15.714,11.742,22.809 C374.566,282.443,379.491,285.423,384.91,285.943z"></path></svg>
+                    <div class="tabLabel">Tracking</div>
+                </a>
+            </div>
+        </div>
+        <div id="weatherWidget">
+            <div id="weatherWidgetTemperature">Temperature</div>
+            <div id="weatherWidgetIcon">
+                <img id="weatherIconId" class="weatherIcon" alt="" src=""/>
+                <div id="weatherIconDescriptionId" class="weatherIconDescription">Description</div>
+            </div>
+        </div>
+        <div id="weatherWidgetMobile">
+            <div id="weatherWidgetMobileTemperature">Temperature</div>
+            <img id="weatherMobileIconId" alt="" src=""/>
+            <div id="weatherMobileIconDescriptionId">Description</div>
+        </div>
+        <div id="autoGeolocationLabel">
+            <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" onclick="javascript:autoGeolocation()">
+                <g>
+                    <path d="M256,189.313c-36.771,0-66.687,29.915-66.687,66.687c0,36.772,29.915,66.687,66.687,66.687 c36.772,0,66.687-29.915,66.687-66.687C322.687,219.228,292.771,189.313,256,189.313z"></path>
+                </g>
+                <g>
+                    <path d="M466.051,241C458.682,136.81,375.19,53.318,271,45.949V0h-30v45.949C136.81,53.318,53.318,136.81,45.949,241H0v30h45.949 C53.318,375.19,136.81,458.682,241,466.051V512h30v-45.949C375.19,458.682,458.682,375.19,466.051,271H512v-30H466.051z M435.963,271C428.722,358.638,358.638,428.722,271,435.963v-24.181h-30v24.181C153.362,428.722,83.278,358.638,76.037,271h24.181 v-30H76.037C83.278,153.362,153.362,83.278,241,76.037v24.181h30V76.037C358.638,83.278,428.722,153.362,435.963,241h-24.181v30 H435.963z"></path>
+                </g>
+            </svg>
+        </div>
+        <div id="externBodyContent">
+            <asp:ContentPlaceHolder ID="bodyContent" runat="server"/>
+        </div>
+        <div id="observerPosition">
+            <a id="observerPositionLabel" class="setPositionPopup" href="javascript:setObserverPositionPopupShow();"></a>
+        </div>
+    </div>
+    
+</body>
+    <script src="/Scripts/External/satellite.min.js"></script>
+    <script src="/Scripts/weatherController.js"></script>
+    <script src="/Scripts/observer.js"></script>
+    <script>
+        var observer = new Observer();
+        var weatherController = new WeatherController();
+        // load cities for popup
+        document.getElementById('cityDropdown').innerHTML = observer.getAvailableCities();
+    </script>
+    
+    <script src="https://get.geojs.io/v1/ip/geo.js?callback=observer.initGeolocation"></script>
+
+    <script>
+        if (observer.getIsGeolocated() === false) {
+            observer.initGeolocation(null);
+        }
+    </script>
+    <asp:ContentPlaceHolder ID="scriptContent" runat="server"/>
+</html>

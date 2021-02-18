@@ -1,0 +1,3 @@
+﻿Used extended library:
+	https://github.com/shashwatak/satellite-js - License: MIT
+	jquery.min.js - Licence MIT

@@ -1,0 +1,73 @@
+﻿EMAIL:	
+	login: hellmanbp@gmail.com
+	password: Hell_2020_Man
+
+NEWS(https://newsapi.org/s/google-news-api) free only first month:
+    email: hellmanbp@gmail.com
+    password: Hell_2020_Man
+    apikey: 3d00bf2b6bd6475e8c0e6a37b577aeac
+
+    example:https://newsapi.org/v2/top-headlines?category=space&apiKey=3d00bf2b6bd6475e8c0e6a37b577aeac
+
+NEWS(https://api.nasa.gov/):
+    email: hellmanbp@gmail.com
+    password: Hell_2020_Man
+    apikey: bXr2UhCu94tld123W2KvU7TvlrMvzMCCePPPwgnM
+
+NEWS(https://thespacedevs.com/llapi):
+    UpcomingLaunches(last 5):  https://ll.thespacedevs.com/2.0.0/launch/upcoming/?limit=5
+    UpcomingLaunches(last 50): https://ll.thespacedevs.com/2.0.0/launch/upcoming/?limit=50&offset=0
+    https://ll.thespacedevs.com/2.0.0/swagger
+
+
+
+
+WEATHER (https://openweathermap.org/api) (https://openweathermap.org/current):
+	login: hellmanbp
+	apikey: 96d7489d54c9bee6756acdde3e2df8ce
+	email: hellmanbp@gmail.com
+	password: Hell_2020_Man
+
+    example_get_icon: https://openweathermap.org/img/wn/04n@2x.png (about https://openweathermap.org/weather-conditions)
+	example: https://api.openweathermap.org/data/2.5/weather?lat=50.1&lon=14.43&appid=96d7489d54c9bee6756acdde3e2df8ce
+     {
+      "coord":{"lon":14.43,"lat":50.1},
+      "weather":[
+        {
+         "id":803,
+         "main":"Clouds",
+         "description":"broken clouds",
+         "icon":"04n"
+         }
+      ],
+      "base":"stations",
+      "main":
+        {
+         "temp":280.83,
+         "feels_like":273.86,
+         "temp_min":280.15,
+         "temp_max":281.48,
+         "pressure":1005,
+         "humidity":70
+        },
+      "visibility":10000,
+      "wind":
+        {
+         "speed":7.7,
+         "deg":240
+        },
+      "clouds":{"all":75},
+      "dt":1608822302,
+      "sys":
+         {
+          "type":1,
+          "id":6835,
+          "country":"CZ",
+          "sunrise":1608793208,
+          "sunset":1608822224
+         },
+      "timezone":3600,
+      "id":3073838,
+      "name":"Karlín",
+      "cod":200
+     }

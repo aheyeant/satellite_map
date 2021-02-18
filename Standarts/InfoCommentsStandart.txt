@@ -1,0 +1,6 @@
+﻿// could be find by "global search in project"
+
+[DEFAULT_VALUE] - default model value
+[CORRECTION_VALUE] - meaning influences behavior
+[DEBUG_MESSAGE] - will write debug information to the terminal if the global variable DEBUG is true
+[POSSIBLE_ERROR] - a place where there might be a mistake;

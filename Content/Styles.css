@@ -1,0 +1,925 @@
+﻿:root {
+    /*--main-selected-color: #3880ff;*/
+    --main-selected-color: #3880ff;
+    --default-font-color: rgb(160,160,160);
+    --default-fill-color: rgb(160,160,160);
+    --default-nav-background: rgba(50,50,50,0.6);
+    --default-news-bacground: rgba(30,30,30,0.7);
+    --main-header-font-size: 20pt;
+    --default-header-font-size: 16pt;
+}
+
+body {
+    background: black;
+    background: url("Images/bg3.jpg") repeat-y;
+    background-size: 100%;
+    font-family: 'Source Sans Pro', 'Arial', sans-serif;
+    font-size: 12pt;
+    margin: 0;
+    padding: 0;
+    color: white;
+}
+
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+
+select {
+    font-family: 'Source Sans Pro', 'Arial', sans-serif;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 90%;
+}
+
+option {
+    font-weight: normal;
+    display: block;
+    white-space: pre;
+    min-height: 1.2em;
+    padding: 0px 2px 1px;
+}
+
+a {
+    text-decoration: none;
+}
+
+h2 {
+    font-size: 2rem;
+    margin: 3pt 1pt;
+}
+
+p {
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+/* == classes == */
+.interactable {
+    cursor: pointer;
+}
+
+.tabs {
+    display: flex;
+    width: 100%;
+}
+
+.tab {
+    display: inline-block;
+    text-align: center;
+    text-transform: uppercase;
+    flex-grow: 1;
+    line-height: 48px;
+    cursor: pointer;
+    color: var(--default-font-color);
+}
+
+.selectedTab {
+    border-bottom: 2px solid var(--main-selected-color);
+    color: var(--main-selected-color);
+}
+
+.tabPane {
+    display: none;
+}
+
+.bold {
+    font-family: 'Source Sans Pro', 'Arial', sans-serif;
+    font-weight: bold;
+}
+
+.hover {
+    color: var(--main-selected-color);
+}
+
+    .hover .icon {
+        fill: var(--main-selected-color);
+        stroke: var(--main-selected-color);
+    }
+
+
+.pageContent {
+    top: 15pt;
+    height: 95%;
+    width: 100%;
+    position: absolute;
+    overflow: hidden;
+    z-index: 2;
+}
+
+.popup {
+    top: 0;
+    height: 95%;
+    width: 100%;
+    position: absolute;
+    overflow: hidden;
+    z-index: 9;
+    background-color: rgba(50,50,50,0.8);
+}
+
+.container {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 25%;
+    text-align: center;
+}
+
+.searchBoxPanel {
+    margin-top: 6pt;
+    margin-bottom: 3pt;
+}
+
+    .searchBoxPanel select {
+        background: rgba(80,80,80,0.25);
+    }
+
+    .searchBoxPanel option {
+        background: rgba(80,80,80, 1);
+    }
+
+.searchBoxHeader {
+    font-size: 14pt;
+    margin: 0;
+    padding-bottom: 5pt;
+}
+
+.inputElement {
+    background: rgba(80,80,80,0.25);
+    color: #fff;
+    border-radius: 5pt;
+    font-size: 1em;
+    border: 1px solid #666;
+}
+
+.placesElement {
+    padding: 1em 2em 1em 1em;
+}
+
+.coordElement {
+    height: 30pt;
+}
+
+.coordsRow {
+    display: flex;
+    flex-direction: row;
+    vertical-align: middle;
+    padding-bottom: 5pt;
+    line-height: 30pt;
+    width: 100%;
+    text-align: center;
+}
+
+    .coordsRow label {
+        width: 20%;
+        flex-grow: 1;
+    }
+
+    .coordsRow input {
+        width: 20%;
+        flex-grow: 3;
+    }
+
+    .coordsRow select {
+        flex-grow: 1;
+        width: 25%;
+        padding: 5pt 5pt 5pt 10pt;
+    }
+
+.coordsCol {
+    text-align: center;
+    margin-left: 5pt;
+    margin-right: 5pt;
+}
+
+.btn {
+    box-sizing: border-box;
+    border-radius: 5pt;
+    display: inline-block;
+    padding: 10pt 18pt 10pt 18pt;
+    font-size: 10pt;
+    border: 0px;
+    color: white;
+    text-transform: uppercase;
+}
+
+.bg-primary {
+    background: var(--main-selected-color);
+}
+
+.bg-red {
+    background: #DD2D10;
+}
+
+.btnBackObserverPositionPopupLayout {
+    width: 30%;
+    text-align: left;
+}
+
+.btnSelectObserverPositionPopupLayout {
+    width: 40%;
+}
+
+.announcementPopupMessage {
+    margin-top: 4pt;
+    color: #f5cf59;
+    font-size: 10pt;
+}
+
+.setPositionPopup {
+    font-size: 14pt;
+    text-align: center;
+    cursor: pointer;
+    color: var(--default-font-color);
+    background-color: var(--default-nav-background);
+    border-radius: 2pt;
+    margin-left: 10pt;
+    padding: 0 10pt;
+}
+
+    .setPositionPopup:hover {
+        color: var(--main-selected-color);
+    }
+
+.buttonPopupLayout {
+    display: flex;
+    width: 90%;
+    padding: 0 5%;
+}
+
+selectedSatelliteListItem {
+    color: var(--main-selected-color);
+}
+/* == end of classes == */
+
+
+/* == id == */
+#nav {
+    margin: auto;
+    width: 100%;
+    position: fixed;
+    bottom: 0pt;
+    z-index: 10;
+}
+
+    #nav .tabs {
+        width: 100%;
+        text-align: center;
+        margin: auto;
+        background-color: black;
+        border-top: 1px solid #222;
+    }
+
+    #nav .tab {
+        border: 0;
+        text-transform: none;
+        width: 33%;
+        line-height: normal;
+        padding-top: 5pt;
+        padding-bottom: 7pt;
+        fill: var(--default-fill-color);
+    }
+
+    #nav .icon {
+        margin: 0;
+        margin: 0;
+        padding-bottom: 3pt;
+        height: 16pt;
+    }
+
+    #nav .tabLabel {
+        font-size: 10pt;
+    }
+
+    #nav .selectedTab {
+        fill: var(--main-selected-color);
+    }
+
+#weatherWidget {
+    display: none;
+}
+
+#weatherWidgetMobile {
+    display: none;
+    justify-content: center;
+    height: 20pt;
+    color: var(--default-font-color);
+    text-align: center;
+    font-size: 12pt;
+}
+
+    #weatherWidgetMobile #weatherWidgetMobileTemperature {
+        padding-top: 2pt;
+        padding-right: 10pt;
+    }
+
+    #weatherWidgetMobile #weatherMobileIconId {
+        height: 20pt;
+        width: 20pt;
+    }
+
+    #weatherWidgetMobile #weatherMobileIconDescriptionId {
+        padding-top: 2pt;
+        padding-left: 10pt;
+    }
+
+#searchBox {
+        background: rgba(80, 80, 80, 0.9);
+        padding-top: 10pt;
+        padding-bottom: 10pt;
+        border-radius: 10pt;
+        margin-top: 42pt;
+        margin-bottom: 42pt;
+    }
+
+    #searchBox .tab {
+        font-size: 11pt;
+    }
+
+    #searchBox button {
+        margin-top: 3pt;
+    }
+
+    #searchBox .icon {
+        margin: 0;
+        margin: 0;
+        padding-bottom: 3pt;
+        height: 16pt;
+    }
+
+#observerPosition {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    margin-bottom: 20%;
+    z-index: 10;
+}
+
+#buttonObserverPositionPopup {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    margin-bottom: 30pt;
+    z-index: 10;
+}
+
+#autoGeolocationLabel {
+    display: none;
+    position: absolute;
+    background-color: rgba(50,50,50,0.9);
+    border-radius: 5pt;
+    bottom: 14%;
+    left: 2%;
+    width: 20pt;
+    height: 20pt;
+    padding: 2pt;
+    z-index: 7;
+}
+
+    #autoGeolocationLabel .icon {
+        width: 20pt;
+        height: 20pt;
+        fill: var(--default-fill-color);
+    }   
+
+#trackingMapLayout {
+    /*display: flex;
+    position: absolute;
+    background: black;
+    width: 100%;
+    height: 80%;*/
+}
+
+    #trackingMapLayout .mapTrackMap {
+        /*width: 75%;*/
+    }
+
+    #trackingMapLayout .selectorTrackMap {
+        /*height: 80%;*/
+        /*width: 25%;
+        margin-right: 6pt;*/
+    }
+
+        #trackingMapLayout .selectorTrackMap .tabs {
+            height: 6%;
+            width: 100%;
+            text-align: center;
+            margin: auto;
+            /*background-color: black;*/
+            /*background-color: var(--default-nav-background);*/
+        }
+
+            #trackingMapLayout .selectorTrackMap .tabs .tab {
+                background-color: var(--default-nav-background);
+                border-radius: 2pt;
+                margin-left: 1pt;
+                margin-right: 1pt;
+                text-transform: none;
+                width: 50%;
+                line-height: normal;
+                padding-top: 5pt;
+                padding-bottom: 7pt;
+                fill: var(--default-fill-color)
+            }
+
+            #trackingMapLayout .selectorTrackMap .tabs .selectedTab {
+                /*border-bottom: 2px solid var(--main-selected-color);
+                color: var(--main-selected-color);*/
+            }
+
+            #trackingMapLayout .selectorTrackMap .tabs .tab .tabLabel {
+                /*font-size: 10pt;*/
+            }
+
+        #trackingMapLayout .selectorTrackMap .list {
+            overflow-y: auto;
+            position: absolute;
+            height: 76%;
+            width : 100%;
+        }
+
+            #trackingMapLayout .selectorTrackMap .list .satelliteListItem {
+                width: 99%;
+                border: 0;
+                text-transform: none;
+                text-align: center;
+                background-color: var(--default-nav-background);
+                border-radius: 2pt;
+                margin: auto;
+                padding: 10pt 0;
+                margin-top: 3pt;
+                cursor: pointer;
+            }
+
+            #trackingMapLayout .selectorTrackMap .list .selectedSatelliteListItem {
+                color: var(--main-selected-color);
+            }
+
+#homePageCenterContainer {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    text-align: center;
+}
+
+#homePageNewsLaunch {
+    margin-bottom: 40pt;
+}
+
+.homePageNewsEntry {
+    width: 90%;
+    margin: 0 4%;
+    padding-bottom: 10pt;
+}
+
+.homePageNewsLaunchHeader {
+    padding: 15pt 0;
+    font-size: var(--main-header-font-size);
+}
+
+.homePageNewsLaunchFail {
+    padding: 10pt 0;
+    font-size: var(--default-header-font-size);
+    color: red;
+}
+
+.launchEntryBox {
+    display: flex;
+    background: var(--default-news-bacground);
+    border-radius: 10pt;
+    padding: 5pt;
+    height: 200pt;
+}
+
+    .launchEntryBox .launchEntryImageBox {
+        width: 33%;
+    }
+
+        .launchEntryBox .launchEntryImageBox .launchEntryImage {
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            border-radius: 5pt;
+        }
+
+    .launchEntryBox .launchEntryInfoBox {
+        width: 66%;
+        text-align: center;
+        padding: 20pt 0 0 0; 
+    }
+
+        .launchEntryBox .launchEntryInfoBox .launchHeader {
+            font-size: var(--default-header-font-size);
+        }
+
+        .launchEntryBox .launchEntryInfoBox .launchText {
+            margin-top: 10pt;
+        }
+
+        .launchEntryBox .launchEntryInfoBox .launchTimer {
+            display: flex;
+            justify-content: center !important;
+            text-align: center;
+            margin: 1%;
+            margin-left: 10pt;
+            font-size: 10pt;
+        }
+
+            .launchEntryBox .launchEntryInfoBox .launchTimer .launchTimerItem {
+            }
+
+        .launchEntryBox .launchEntryInfoBox .launchDate {
+            font-size: 14pt;
+        }
+/* == end of id == */
+
+
+
+/* == media == */
+@media (min-width: 500px) {
+    .pageContent {
+        top: 0; 
+        min-height: 500pt;
+        height: 100%
+    }
+
+    .popup {
+        min-height: 500pt;
+        height: 100%
+    }
+
+    #trackingMapLayout {
+        display: flex;
+        position: absolute;
+        background: black;
+        width: 100%;
+        height: 79%;
+    }
+
+        #trackingMapLayout .mapTrackMap {
+            width: 75%;
+        }
+
+        #trackingMapLayout .selectorTrackMap {
+            width: 25%;
+            margin-right: 6pt;
+        }
+
+            #trackingMapLayout .selectorTrackMap .tabs {
+                height: 6%;
+                width: 100%;
+                text-align: center;
+                margin: auto;
+                background-color: var(--default-nav-background);
+            }
+
+                #trackingMapLayout .selectorTrackMap .tabs .tab {
+                    border: 1px solid #222;
+                    margin-left: 0;
+                    margin-right: 0;
+                    text-transform: none;
+                    width: 50%;
+                    line-height: normal;
+                    padding-top: 5pt;
+                    padding-bottom: 7pt;
+                    fill: var(--default-fill-color);
+                }
+
+                #trackingMapLayout .selectorTrackMap .tabs .selectedTab {
+                    border-bottom: 2px solid var(--main-selected-color);
+                    color: var(--main-selected-color);
+                }
+
+                    #trackingMapLayout .selectorTrackMap .tabs .tab .tabLabel {
+                        font-size: 10pt;
+                    }
+
+            #trackingMapLayout .selectorTrackMap .list {
+                position: inherit;
+                overflow-y: auto;
+                height: 94%;
+            }
+
+                #trackingMapLayout .selectorTrackMap .list .satelliteListItem {
+                    width: 99%;
+                    border: 0;
+                    text-transform: none;
+                    text-align: center;
+                    background-color: var(--default-nav-background);
+                    border-radius: 2pt;
+                    margin: auto;
+                    padding: 30pt 0;
+                    margin-top: 3pt;
+                    cursor: pointer;
+                }
+
+                #trackingMapLayout .selectorTrackMap .list .selectedSatelliteListItem {
+                    color: var(--main-selected-color);
+                }
+
+    #searchBox {
+        width: 45%;
+        margin: auto;
+    }
+
+    #mapContainer {
+        padding-top: 45pt;
+    }
+
+    #nav {
+        top: 5pt;
+        bottom: auto;
+    }
+
+        #nav .tabs {
+            width: 35%;
+            background-color: var(--default-nav-background);
+            border-radius: 10pt;
+        }
+
+    #weatherWidget {
+        position: fixed;
+        top: 5pt;
+        right: 0pt;
+        margin-right: 2%;
+        color: var(--default-font-color);
+        background-color: var(--default-nav-background);
+        border-radius: 10pt;
+        text-align: center;
+        font-size: 10pt;
+        z-index: 10;
+        height: 8%;
+        padding: 0 10pt;
+    }
+
+    #weatherWidgetTemperature {
+        padding-top: 8pt;
+        height: 9pt;
+    }
+
+    #weatherWidgetIcon {
+        height: 18pt;
+        display: flex;
+        justify-content: center;
+    }
+
+        #weatherWidgetIcon .weatherIcon {
+            height: 30pt;
+            width: 30pt;
+        }
+
+        #weatherWidgetIcon .weatherIconDescription {
+            padding-top: 8pt;
+        }
+
+    #observerPosition {
+            bottom: 0;
+            margin-bottom: 7pt;
+        }
+
+    #buttonObserverPositionPopup {
+        bottom: 0;
+        margin-bottom: 7pt;
+    }
+
+    .setPositionPopup {
+        font-size: 14pt;
+        text-align: center;
+        cursor: pointer;
+        color: var(--default-font-color);
+        background-color: var(--default-nav-background);
+        border-radius: 2pt;
+        margin-left: 10pt;
+    }
+
+    #autoGeolocationLabel {
+        position: absolute;
+        background-color: rgba(50,50,50,0.9);
+        border-radius: 5pt;
+        bottom: 6%;
+        left: 1%;
+        width: 20pt;
+        height: 20pt;
+        padding: 2pt;
+    }
+
+        #autoGeolocationLabel .icon {
+            width: 20pt;
+            height: 20pt;
+            fill: var(--default-fill-color);
+        }
+
+            #autoGeolocationLabel .icon:hover {
+                fill: var(--main-selected-color);
+                cursor: pointer;
+            }
+
+
+    #homePageCenterContainer {
+        position: absolute;
+        top: 0;
+        width: 70%;
+        margin: 0 15%;
+        padding-top: 7%;
+        text-align: center;
+    }
+
+    #homePageNewsLaunch {
+        margin-bottom: 10pt;
+    }
+
+    .homePageNewsEntry {
+        width: 90%;
+        margin: 0 5%;
+        padding-bottom: 10pt;
+    }
+
+    .homePageNewsLaunchHeader {
+        padding: 15pt 0;
+        font-size: var(--default-header-font-size);
+    }
+
+    .homePageNewsLaunchFail {
+        padding: 10pt 0;
+        font-size: var(--default-header-font-size);
+        color: red;
+    }
+
+    .launchEntryBox {
+        display: flex;
+        background: var(--default-news-bacground);
+        border-radius: 10pt;
+        padding: 5pt;
+        height: 200pt;
+    }
+
+        .launchEntryBox .launchEntryImageBox {
+            width: 33%;
+        }
+
+            .launchEntryBox .launchEntryImageBox .launchEntryImage {
+                width: 100%;
+                height: 100%;
+                background-size: cover;
+                background-position: center;
+                border-radius: 5pt;
+            }
+
+        .launchEntryBox .launchEntryInfoBox {
+            width: 66%;
+            padding: 20pt 10pt;
+            text-align: center;
+
+        }
+
+            .launchEntryBox .launchEntryInfoBox .launchHeader {
+                font-size: var(--default-header-font-size);
+            }
+
+            .launchEntryBox .launchEntryInfoBox .launchText {
+                margin-top: 10pt;
+            }
+
+            .launchEntryBox .launchEntryInfoBox .launchTimer {
+                display: flex;
+                justify-content: center !important;
+                text-align: center;
+                margin: 1%;
+                margin-left: 1%;
+                font-size: 12pt;
+            }
+
+                .launchEntryBox .launchEntryInfoBox .launchTimer .launchTimerItem {
+                    
+                }
+
+            .launchEntryBox .launchEntryInfoBox .launchDate {
+                font-size: 14pt;
+            }
+}
+
+@media (max-aspect-ratio: 4/3) and (min-width: 500px) {
+    #searchBox {
+        width: 60%;
+        margin: auto;
+    }
+}
+/* == end of media == */
+
+
+
+
+/* == map == */
+#mapTitle {
+    font-size: var(--main-header-font-size);
+    text-align: center;
+    margin-top: 10pt;
+    margin-bottom: 10pt;
+}
+
+#liveMap {
+    position: absolute;
+    background: black;
+    width: 100%;
+    height: 81%;
+}
+
+#trackingMap {
+    position: absolute;
+    background: black;
+    width: 100%;
+    height: 76%;
+    margin-top: 29pt;
+    z-index: 6;
+}
+
+@media (min-width: 500px) {
+    #trackingMap {
+        position: absolute;
+        background: black;
+        width: 74%;
+        height: 100%;
+        margin: 0;
+    }
+
+    #liveMap {
+        position: absolute;
+        background: black;
+        width: 100%;
+        height: 79%;
+    }
+}
+/* == end of map == */
+
+
+
+/* == ripple == */
+[ripple] {
+    z-index: 100;
+    position: relative;
+    overflow: hidden;
+}
+
+    [ripple] .ripple {
+        position: absolute;
+        background: #FFFFFF;
+        width: 12px;
+        height: 12px;
+        border-radius: 100%;
+        -webkit-animation: ripple 1.3s;
+        animation: ripple 1.3s;
+    }
+
+@-webkit-keyframes ripple {
+    0% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+        opacity: 0.2;
+    }
+
+    100% {
+        -webkit-transform: scale(40);
+        transform: scale(40);
+        opacity: 0;
+    }
+}
+
+@keyframes ripple {
+    0% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+        opacity: 0.2;
+    }
+
+    100% {
+        -webkit-transform: scale(40);
+        transform: scale(40);
+        opacity: 0;
+    }
+}
+/* == end of ripple == */
+
+/* == scrollbar == */
+/* 1 - скроллбар */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+/* 3 - трек */
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(255,255,255,0.3);
+    border-radius: 10px;
+}
+
+/* 4 - видимая часть трека */
+::-webkit-scrollbar-track-piece {
+/*    -webkit-box-shadow: inset 0 0 6px rgba(255,255,255,0.8);
+    border-radius: 10px;*/
+}
+
+/* 5 - ползунок */
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(255,255,255,0.3);
+}
